@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -31,14 +30,14 @@
 						<li class = "active"><a href = "http://dabda.github.io/ois-dn4">Domov</a></li>
 						<li><a href = "#opisDomene" data-toggle = "modal">Opis Domene</a></li>
 						<li class = "dropdown">
-							<a href = "#" class = "dropdown-toggle" data-toggle = "dropdown">Primeri <b class = "caret"></b></a>
+							<a href = "#" class = "dropdown-toggle" data-toggle = "dropdown">Primeri uporabe<b class = "caret"></b></a>
 							<ul class = "dropdown-menu">
 								<li><a href = "#">Primer #1</a></li>
 								<li><a href = "#">Primer #2</a></li>
 								<li><a href = "#">Primer #3</a></li>
 							</ul>
 						</li>
-						<li><a href = "http://dabda.github.io/ois-dn4">Pomoc</a></li>
+						<li><a href = "#pomoc" data-toggle = "modal">Pomoc</a></li>
 					</ul>
 				</div>
 			</div>
@@ -59,15 +58,15 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-lg-8 col-md-8 col-sm-8"><b>Kreiraj EHR zapis</b> za novega bolnika</div>
-								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"><option value=""></option><option value="Pujsa,Pepa,1938-10-30T14:58">Pujsa Pepa</option></select></div>
+								<div class="col-lg-6 col-md-6 col-sm-6"><b>Izpis</b> meritev <b>presezenih vitalnih znakov</b> bolnika</div>
+								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiTip"><option value="pritisk AQL">pritisk</option><option value="telesna temperatura AQL">temperatura</option><option value="BMI">BMI</option></select></div>
+								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhr"><option value=""></option><option value="220870a1-651f-4fea-bd07-a1142cc53796">Oseba1</option><option value="eedf4cfe-8131-4f5e-b2e8-74211e472a57">Oseba2</option></option><option value="9f2d3e96-3839-4091-b589-a226d2367719">Oseba3</option></select></div>
 							</div>
 						</div>
 						<div class="panel-body">
-							<span class="label label-default">Ime</span><input id="kreirajIme" type="text" class="form-control input-mini" placeholder="Osama">
-							<span class="label label-default">Priimek</span><input id="kreirajPriimek" type="text" class="form-control" placeholder="Bin Laden">
-							<span class="label label-default">Datum rojstva</span><input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="1957-03-10T09:08">
-							<button type="button" class="btn btn-primary btn-xs" onclick="kreirajEHRzaBolnika()">Dodaj osnovne podatke o bolniku</button><span id="kreirajSporocilo"></span>
+							<span class="label label-default">EHR ID</span><input id="meritve" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+							<button type="button" class="btn btn-primary btn-xs" onclick="preberiMeritve('pritisk AQL')">Preberi meritve vitalnih znakov</button><span id="MeritveSporocilo"></span>
+							<div id="rezultat"></div>
 						</div>
 					</div>
 				</div>
@@ -75,53 +74,18 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-lg-8 col-md-8 col-sm-8"><b>Preberi EHR zapis</b> obstoječega bolnika</div>
-								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciEHR"><option value=""></option><option value="254f791d-2e7c-49d9-b646-376f62d6ead5">Dejan Lavbič</option><option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option></select></div>
+								<div class="col-lg-8 col-md-8 col-sm-8"><b>Generiraj EHR zapis</b> za novega bolnika</div>
+								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="generirajBolnika"><option value="Bdvg, Oseba1, 1980-11-11T10:00, 0">Oseba1</option><option value="Bdvg, Oseba2, 1985-12-12T18:30, 1">Oseba2</option><option value="Bdvg, Oseba3, 1984-12-20T20:30, 2">Oseba3</option></select></div>
 							</div>
 						</div>
 						<div class="panel-body">
-							<span class="label label-default">EHR ID</span><input id="preberiEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
-							<button type="button" class="btn btn-primary btn-xs" onclick="preberiEHRodBolnika()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-6 col-md-6">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-lg-8 col-md-8 col-sm-8"><b>Vnos</b> meritve <b>vitalnih znakov</b> bolnika</div>
-								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02|2014-11-21T11:40Z|185|80.0|36.50|118|92|98|medicinska sestra Smrketa">Ata Smrk</option></select></div>
-							</div>
+							<button type="button" class="btn btn-primary btn-xs" onclick="generirajEHRzapis()">Generiraj podatke</button>
 						</div>
 						<div class="panel-body">
-							<span class="label label-default">EHR ID</span><input id="dodajVitalnoEHR" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
-							<span class="label label-default">Datum in ura</span><input id="dodajVitalnoDatumInUra" type="text" class="form-control input-mini" placeholder="2014-11-21T11:40Z">
-							<span class="label label-default">Telesna višina</span><div class="input-group"><input id="dodajVitalnoTelesnaVisina" type="text" class="form-control input-mini" placeholder="185"><span class="input-group-addon">cm</span></div>
-							<span class="label label-default">Telesna teža</span><div class="input-group"><input id="dodajVitalnoTelesnaTeza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
-							<span class="label label-default">Telesna temperatura</span><div class="input-group"><input id="dodajVitalnoTelesnaTemperatura" type="text" class="form-control input-mini" placeholder="36.50"><span class="input-group-addon">°C</span></div>
-							<span class="label label-default">Sistolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakSistolicni" type="text" class="form-control input-mini" placeholder="118"><span class="input-group-addon">mm Hg</span></div>
-							<span class="label label-default">Diastolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakDiastolicni" type="text" class="form-control input-mini" placeholder="92"><span class="input-group-addon">mm Hg</span></div>
-							<span class="label label-default">Nasičenost krvi s kisikom</span><div class="input-group"><input id="dodajVitalnoNasicenostKrviSKisikom" type="text" class="form-control input-mini" placeholder="98"><span class="input-group-addon">%</span></div>
-							<span class="label label-default">Merilec</span><input id="dodajVitalnoMerilec" type="text" class="form-control input-mini" placeholder="medicinska sestra Hrastova Micka">
-							<button type="button" class="btn btn-primary btn-xs" onclick="dodajMeritveVitalnihZnakov()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveVitalnihZnakovSporocilo"></span>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> meritev <b>vitalnih znakov</b> bolnika</div>
-								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiTipZaVitalneZnake"><option value="telesna temperatura">telesna temperatura</option><option value="telesna temperatura AQL">telesna temperatura (filter na podhladitev)</option><option value="telesna teža">telesna teža</option></select></div>
-								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhrIdZaVitalneZnake"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option><option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option></select></div>
-							</div>
+							<span id="generirajSporocilo"></span>
 						</div>
 						<div class="panel-body">
-							<span class="label label-default">EHR ID</span><input id="meritveVitalnihZnakovEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
-							<button type="button" class="btn btn-primary btn-xs" onclick="preberiMeritveVitalnihZnakov('telesna temperatura')">Preberi meritve vitalnih znakov</button><span id="preberiMeritveVitalnihZnakovSporocilo"></span>
-							<div id="rezultatMeritveVitalnihZnakov"></div>
+							<span id="generirajSporociloVnosov"></span>
 						</div>
 					</div>
 				</div>
@@ -141,7 +105,34 @@
 						<h4>Opis domene</h4>
 					</div>
 					<div class = "modal-body">
-						<p>tekst je tu</p>
+						<p>- moznost izbire 3 oseb iz padajocega menuja (izpis)</p>
+						<p>- na voljo je izvorna koda generatorja funkcija <b>generirajEHRzapis()</b> v datoteki demo.js</p>
+						<p>- moznost generiranja novih podatkov</p>
+						<p>- uporabljena je vsaj 1 AQL poizvedba (pritisk)</p>
+						<p>- pri izgradnji uporabniskega vmesnika je uporabljen Twitter Bootstrap</p>
+						<p>- deluje v Firefox, Chrome ter IE</p>
+						<p>- mobilna verzija preizkuseno deluje v Opera mini na android 2.3.7</p>
+					</div>
+					<div class = "modal-footer">
+						<a class = "btn btn-default" data-dismiss = "modal">Zapri</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--This is the Pomoc (modal) part-->
+		<div class = "modal fade" id = "pomoc" role = "dialog">
+			<div class = "modal-dialog">
+				<div class = "modal-content">
+					<div class = "modal-header">
+						<h4><b>Pomoc</b></h4>
+					</div>
+					<div class = "modal-body">
+						<h4>Generator</h4>
+						<p>Generator EHR zapisa ime 3 mozne nastavitve (Oseba1-3). Oseba1 tezi k stabilnim vitalnim znakom, Oseba2 k rahlo povisanim, Oseba3 pa k najbolj narascajocim. Za vsako osebo se generirara za 30 dni podatkov. Pri tem se za vsako od teh oseb generira tudi novi EHR zapis, ki se takoj shrani v polje za izpis meritev.</p>
+						<h4>Izpis meritev</h4>
+						<p>- pritisk izpise vrednosti, ki so presegle vrednosti 140/90</p>
+						<p>- telesna temperatura izpise vrednosti, ki so presegle vrednost 37.5°C</p>
+						<p>- BMI izpise indeks telesne mase [masa/visina^2], nad vrednostjo 25 je zvecana telesna teza</p>
 					</div>
 					<div class = "modal-footer">
 						<a class = "btn btn-default" data-dismiss = "modal">Zapri</a>
